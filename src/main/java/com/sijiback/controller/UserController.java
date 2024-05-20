@@ -2,7 +2,7 @@ package com.sijiback.controller;
 
 import com.sijiback.dto.*;
 import com.sijiback.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,26 +10,18 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api")
 public class UserController {
 
-    @Autowired
+    @Resource
     private UserService userService;
 
-    @GetMapping("/user/{id}")
-    public ResponseEntity<UserResponse> getUser(@PathVariable("id") Long id) {
-        UserRequest request = new UserRequest();
-        request.setId(id);
-        UserResponse response = userService.getUser(request);
-        return ResponseEntity.ok(response);
-    }
-
     @PostMapping("/register")
-    public ResponseEntity<UserRegisterResponse> registerUser(@RequestParam String username, @RequestParam String password){
-        UserRegisterResponse response = userService.registerUser(new UserRegisterRequest(username,password));
+    public ResponseEntity<UserRegisterResponse> registerUser(UserRegisterRequest request) {
+        UserRegisterResponse response = userService.registerUser(new UserRegisterRequest(request.getUsername(), request.getPassword()));
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UserLoginResponse> loginUser(@RequestParam String username, @RequestParam String password) {
-        UserLoginResponse response = userService.loginUser(new UserLoginRequest(username,password));
+    public ResponseEntity<UserLoginResponse> loginUser(UserLoginRequest request) {
+        UserLoginResponse response = userService.loginUser(new UserLoginRequest(request.getUsername(), request.getPassword()));
         return ResponseEntity.ok(response);
     }
 }

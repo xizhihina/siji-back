@@ -10,18 +10,11 @@ import lombok.Data;
 @Data
 public class User {
     @TableId(value = "id", type = IdType.AUTO)
-    private long id;
-    @TableField("name")
-    private String name;
-    @TableField("follow_count")
-    private Long followCount;
-    @TableField("is_follow")
-    private Boolean isFollow;
-    @TableField("avatar")
-    private String avatar;
-    @TableField("background_image")
-    private String backgroundImage;
-    @TableField("signature")
-    private String signature;
-
+    private int id;
+    @TableField("username")
+    private String username;
+    @TableField("password")
+    private String password;
+    @TableField("token")
+    private String token;
 }
