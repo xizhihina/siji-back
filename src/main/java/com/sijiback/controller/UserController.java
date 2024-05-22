@@ -24,5 +24,11 @@ public class UserController {
         UserLoginResponse response = userService.loginUser(new UserLoginRequest(request.getUsername(), request.getPassword()));
         return ResponseEntity.ok(response);
     }
+
+
+    @GetMapping
+    public UserResponse getUser(int id) {
+        return userService.getUser(id);
+    }
 }
 

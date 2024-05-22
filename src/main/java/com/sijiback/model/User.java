@@ -17,4 +17,10 @@ public class User {
     private String password;
     @TableField("token")
     private String token;
+    @TableField("level")
+    private String level;
+    @TableField("phone_number")
+    private String phone_number;
+    @TableField("address")
+    private String address;
 }

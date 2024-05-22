@@ -67,4 +67,20 @@ public class UserService {
                 .signWith(SignatureAlgorithm.HS256, tokenSignKey) // 签名部分
                 .compact();
     }
+
+    public UserResponse getUser(int id) {
+        User user = userMapper.selectById(id);
+        UserResponse response = new UserResponse();
+
+        if (user != null) {
+            response.setStatusCode(0);
+            response.setStatusMsg("Success");
+            response.setUser(user);
+        } else {
+            response.setStatusCode(1);
+            response.setStatusMsg("User not found");
+        }
+
+        return response;
+    }
 }
