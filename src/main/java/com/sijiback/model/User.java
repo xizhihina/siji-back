@@ -20,7 +20,18 @@ public class User {
     @TableField("level")
     private String level;
     @TableField("phone_number")
-    private String phone_number;
+    private String phoneNumber;
     @TableField("address")
     private String address;
+    @TableField("avatar")
+    private String avatar;
+
+    public UserMessage ToUserMessage() {
+        UserMessage userMessage = new UserMessage();
+        userMessage.setId(this.id);
+        userMessage.setPhoneNumber(this.phoneNumber);
+        userMessage.setAvatar(this.avatar);
+        userMessage.setUsername(this.username);
+        return userMessage;
+    }
 }

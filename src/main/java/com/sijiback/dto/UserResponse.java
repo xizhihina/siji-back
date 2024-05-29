@@ -2,11 +2,13 @@ package com.sijiback.dto;
 
 
 import com.sijiback.model.User;
+import com.sijiback.model.UserMessage;
 
+//获取用户信息响应类
 public class UserResponse {
-    private int statusCode;
-    private String statusMsg;
-    private User user;
+    private int statusCode;//返回状态码
+    private String statusMsg;//返回状态描述
+    private UserMessage user;//返回用户信息结构体
 
     // Getters and Setters
     public int getStatusCode() {
@@ -25,11 +27,11 @@ public class UserResponse {
         this.statusMsg = statusMsg;
     }
 
-    public User getUser() {
+    public UserMessage getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserMessage user) {
         this.user = user;
     }
 }

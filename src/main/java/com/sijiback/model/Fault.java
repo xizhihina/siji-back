@@ -6,15 +6,21 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
-@TableName("device")
-public class Device {
+@TableName("fault")
+public class Fault {
     @TableId(value = "id", type = IdType.AUTO)
     private int id;
-    @TableField("name")
-    private String deviceName;
-    @TableField("user_id")
-    private int userId;
+    @TableField("description")
+    private String description;
+    @TableField("device_id")
+    private int deviceId;
     @TableField("status")
-    private String deviceStatus;
+    private String faultStatus;
+    @TableField("create_time")
+    private LocalDateTime createTime;
 }
+
+
