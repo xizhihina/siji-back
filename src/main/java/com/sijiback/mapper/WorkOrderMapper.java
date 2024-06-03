@@ -16,7 +16,7 @@ public interface WorkOrderMapper extends BaseMapper<WorkOrder> {
     // 查询工单列表
     @Select("<script>" +
             "SELECT wo.id AS workOrderId, wo.maintenance_time AS maintenanceTime, wo.status AS workOrderStatus, " +
-            "u1.username AS maintenancePerson, " +
+            "u1.username AS maintenancePersonName, " + "u1.id AS maintenancePersonId, " +
             "f.id AS faultId, f.description AS faultDescription, f.status AS faultStatus, f.create_time AS faultCreateTime, " +
             "d.id AS deviceId, d.status AS deviceStatus, d.name AS deviceName, " +
             "u2.id AS userId, u2.username AS owner, u2.address, u2.avatar, u2.level, u2.phone_number AS phoneNumber " +

@@ -5,6 +5,7 @@ import com.sijiback.model.*;
 import com.sijiback.mapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,17 +23,17 @@ public class FaultService {
 
     // 创建故障
     // 根据设备ID检查设备是否存在，然后创建故障，并设置故障状态为“1”（未处理），并设置description为请求中的描述，时间为当前时间
-    public FaultCreateResponse createFault(FaultCreateRequest request) {
+    public FaultCreateResponse createFault(@RequestBody FaultCreateRequest request) {
 
         // 检查设备是否存在
-        Device device = deviceMapper.selectById(request.getDeviceId());
+        Device device = deviceMapper.selectById(request.getDevice_id());
         if (device == null) {
             return new FaultCreateResponse(1, "Invalid device_id");
         }
         // 创建故障
         Fault fault = new Fault();
-        fault.setDeviceId(request.getDeviceId());
-        fault.setDescription(request.getFaultDescription());
+        fault.setDeviceId(request.getDevice_id());
+        fault.setDescription(request.getFault_description());
         fault.setFaultStatus("1"); // 假设故障未处理状态为“1”，故障已派单状态为“2”
         // 设置创建时间和更新时间
         fault.setCreateTime(LocalDateTime.parse(String.valueOf(LocalDateTime.now())));
@@ -52,26 +53,25 @@ public class FaultService {
     public FaultUpdateResponse updateFault(FaultUpdateRequest request) {
 
         // 检查设备是否存在
-        Device device = deviceMapper.selectById(request.getDeviceId());
+        Device device = deviceMapper.selectById(request.getDevice_id());
         if (device == null) {
             return new FaultUpdateResponse(1, "Invalid device_id");
         }
 
         // 检查故障是否存在
-        Fault fault = faultMapper.selectById(request.getFaultId());
-        System.out.println("request.getFault_id()");
+        Fault fault = faultMapper.selectById(request.getFault_id());
         if (fault == null) {
             return new FaultUpdateResponse(1, "Fault not found");
         }
 
         // 检查故障与设备是否匹配
-        if (fault.getDeviceId() != request.getDeviceId()) {
+        if (fault.getDeviceId() != request.getDevice_id()) {
             return new FaultUpdateResponse(1, "Fault does not belong to the device");
         }
 
         // 更新故障信息
-        fault.setFaultStatus(request.getFaultStatus());
-        fault.setDescription(request.getFaultDescription());
+        fault.setFaultStatus(request.getStatus());
+        fault.setDescription(request.getDescription());
         fault.setCreateTime(LocalDateTime.parse(String.valueOf(LocalDateTime.now())));
 
         int rows = faultMapper.updateById(fault);
@@ -90,12 +90,12 @@ public class FaultService {
     public FaultResponse getFaults(FaultRequest request) {
         // 查询故障列表
         List<FaultResponse.FaultWithDetails> faults = faultMapper.getFaultsByUserDetails(
-                request.getDeviceId(),
-                request.getDeviceName(),
-                request.getFaultStatus(),
+                request.getDevice_id(),
+                request.getDevice_name(),
+                request.getFault_status(),
                 request.getOwner(),
                 request.getAddress(),
-                request.getPhoneNumber()
+                request.getPhone_number()
         );
 
         if (Objects.isNull(faults) || faults.isEmpty()) {

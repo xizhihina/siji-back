@@ -22,19 +22,29 @@ public class UserService {
      * 用户注册
      */
     // 根据username和password注册新的用户
+//    public UserRegisterResponse registerUser(UserRegisterRequest request) {
     public UserRegisterResponse registerUser(UserRegisterRequest request) {
         User user = new User();
         user.setUsername(request.getUsername());
         // 使用md5加密密码
         user.setPassword(DigestUtils.md5DigestAsHex(request.getPassword().getBytes()));
         user.setToken(generateToken(user.getId(), user.getPassword()));
-        userMapper.insert(user);
+        System.out.println(user);
+        try {
+            userMapper.insert(user);
+        } catch (Exception e) {
+            // 注册失败
+            UserRegisterResponse response = new UserRegisterResponse();
+            response.setStatus_code(1);
+            response.setStatus_msg("注册失败，用户名已存在");
+            return response;
+        }
 
         UserRegisterResponse response = new UserRegisterResponse();
         // 注册成功
-        response.setStatusCode(0);
-        response.setStatusMsg("注册成功");
-        response.setUserId(user.getId());
+        response.setStatus_code(0);
+        response.setStatus_msg("注册成功");
+        response.setUser_id(user.getId());
         response.setToken(user.getToken());
         return response;
     }
@@ -44,6 +54,7 @@ public class UserService {
      */
     // 根据username和password进行登录
     public UserLoginResponse loginUser(UserLoginRequest request) {
+        System.out.println(request);
         // 使用md5加密输入的密码
         String encryptedPassword = DigestUtils.md5DigestAsHex(request.getPassword().getBytes());
         User user = userMapper.selectByUsernameAndPassword(request.getUsername(), encryptedPassword);
@@ -51,14 +62,14 @@ public class UserService {
         System.out.println(user);
         if (user != null) {
             // 登录成功，生成token
-            response.setStatusCode(0);
-            response.setStatusMsg("登录成功");
-            response.setUserId(user.getId());
+            response.setStatus_code(0);
+            response.setStatus_msg("登录成功");
+            response.setUser_id(user.getId());
             response.setToken(user.getToken());  // 使用用户表中的token
         } else {
             // 登录失败
-            response.setStatusCode(1);
-            response.setStatusMsg("登录失败，用户名或密码错误");
+            response.setStatus_code(1);
+            response.setStatus_msg("登录失败，用户名或密码错误");
         }
         return response;
     }
@@ -97,15 +108,31 @@ public class UserService {
 
         if (user != null) {
             // 如果用户存在，返回用户信息
-            response.setStatusCode(0);
-            response.setStatusMsg("Success");
+            response.setStatus_code(0);
+            response.setStatus_msg("Success");
             response.setUser(user);
         } else {
             // 如果用户不存在，返回错误信息
-            response.setStatusCode(1);
-            response.setStatusMsg("User not found");
+            response.setStatus_code(1);
+            response.setStatus_msg("User not found");
         }
 
+        return response;
+    }
+
+    /**
+     * 修改用户头像
+     */
+    // 根据用户id和新的头像地址修改用户头像
+    public UserResponse updateAvatar(int id,String token, String avatar) {
+        User user = userMapper.selectById(id);
+        user.setAvatar(avatar);
+        userMapper.updateById(user);
+
+        UserResponse response = new UserResponse();
+        response.setStatus_code(0);
+        response.setStatus_msg("Success");
+        response.setUser(user.ToUserMessage());
         return response;
     }
 }

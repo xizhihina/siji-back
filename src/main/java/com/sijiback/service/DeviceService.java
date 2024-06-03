@@ -26,33 +26,33 @@ public class DeviceService {
         DeviceCreateResponse response = new DeviceCreateResponse();
         try {
             // 检查用户是否存在
-            User user = userMapper.selectById(request.getUserId());
+            User user = userMapper.selectById(request.getUser_id());
             if (user == null) {
-                response.setStatusCode(1);
-                response.setStatusMsg("Failed to create device: User not found");
+                response.setStatus_code(1);
+                response.setStatus_msg("Failed to create device: User not found");
                 return response;
             }
 
             // 创建设备
             Device device = new Device();
-            device.setUserId(request.getUserId());
-            device.setDeviceName(request.getDeviceName());
-            device.setDeviceStatus(request.getDeviceStatus());
+            device.setUserId(request.getUser_id());
+            device.setDeviceName(request.getDevice_name());
+            device.setDeviceStatus(request.getDevice_status());
             int rows = deviceMapper.insert(device);
 
             if (rows > 0) {
                 // 创建成功
-                response.setStatusCode(0);
-                response.setStatusMsg("Success");
+                response.setStatus_code(0);
+                response.setStatus_msg("Success");
             } else {
                 // 创建失败
-                response.setStatusCode(1);
-                response.setStatusMsg("Failed to create device");
+                response.setStatus_code(1);
+                response.setStatus_msg("Failed to create device");
             }
         } catch (Exception e) {
             // 异常处理
-            response.setStatusCode(1);
-            response.setStatusMsg("Failed to create device");
+            response.setStatus_code(1);
+            response.setStatus_msg("Failed to create device");
         }
         return response;
     }
@@ -63,46 +63,47 @@ public class DeviceService {
         DeviceUpdateResponse response = new DeviceUpdateResponse();
         try {
             // 检查设备是否存在
-            Device device = deviceMapper.selectById(request.getDeviceId());
+            Device device = deviceMapper.selectById(request.getDevice_id());
             if (device == null) {
-                response.setStatusCode(1);
-                response.setStatusMsg("Failed to update device: Device not found");
+                response.setStatus_code(1);
+                response.setStatus_msg("Failed to update device: Device not found");
                 return response;
             }
 
             // 检查用户是否存在
-            User user = userMapper.selectById(request.getUserId());
+            User user = userMapper.selectById(request.getUser_id());
             if (user == null) {
-                response.setStatusCode(1);
-                response.setStatusMsg("Failed to update device: User not found");
+                response.setStatus_code(1);
+                response.setStatus_msg("Failed to update device: User not found");
                 return response;
             }
 
             // 检查设备是否属于当前用户
-            if (device.getUserId() != request.getUserId()) {
-                response.setStatusCode(1);
-                response.setStatusMsg("Failed to update device: Device does not belong to the user");
+            if (device.getUserId() != request.getUser_id()) {
+                response.setStatus_code(1);
+                response.setStatus_msg("Failed to update device: Device does not belong to the user");
                 return response;
             }
 
             // 更新设备信息
-            device.setDeviceName(request.getDeviceName());
-            device.setDeviceStatus(request.getDeviceStatus());
+            device.setDeviceName(request.getDevice_name());
+            device.setDeviceStatus(request.getDevice_status());
+            System.out.println(device);
             int rows = deviceMapper.updateById(device);
 
             if (rows > 0) {
                 // 更新成功
-                response.setStatusCode(0);
-                response.setStatusMsg("Success");
+                response.setStatus_code(0);
+                response.setStatus_msg("Success");
             } else {
                 // 更新失败
-                response.setStatusCode(1);
-                response.setStatusMsg("Failed to update device");
+                response.setStatus_code(1);
+                response.setStatus_msg("Failed to update device");
             }
         } catch (Exception e) {
             // 异常处理
-            response.setStatusCode(1);
-            response.setStatusMsg("Failed to update device");
+            response.setStatus_code(1);
+            response.setStatus_msg("Failed to update device");
         }
         return response;
     }
@@ -113,29 +114,29 @@ public class DeviceService {
         DeviceDeleteResponse response = new DeviceDeleteResponse();
         try {
             // 检查设备是否存在
-            Device device = deviceMapper.selectById(request.getDeviceId());
+            Device device = deviceMapper.selectById(request.getDevice_id());
             if (device == null) {
-                response.setStatusCode(1);
-                response.setStatusMsg("Failed to delete device: Device not found");
+                response.setStatus_code(1);
+                response.setStatus_msg("Failed to delete device: Device not found");
                 return response;
             }
 
             // 删除设备
-            int rows = deviceMapper.deleteById(request.getDeviceId());
+            int rows = deviceMapper.deleteById(request.getDevice_id());
 
             if (rows > 0) {
                 // 删除成功
-                response.setStatusCode(0);
-                response.setStatusMsg("Success");
+                response.setStatus_code(0);
+                response.setStatus_msg("Success");
             } else {
                 // 删除失败
-                response.setStatusCode(1);
-                response.setStatusMsg("Failed to delete device");
+                response.setStatus_code(1);
+                response.setStatus_msg("Failed to delete device");
             }
         } catch (Exception e) {
             // 异常处理
-            response.setStatusCode(1);
-            response.setStatusMsg("Failed to delete device");
+            response.setStatus_code(1);
+            response.setStatus_msg("Failed to delete device");
         }
         return response;
     }
@@ -146,12 +147,12 @@ public class DeviceService {
     public DeviceResponse getDevices(DeviceRequest request) {
         // 检查设备是否存在
         List<DeviceResponse.DeviceWithOwner> devices = deviceMapper.getDevicesByUserDetails(
-                request.getDeviceId(),
-                request.getDeviceName(),
-                request.getDeviceStatus(),
+                request.getDevice_id(),
+                request.getDevice_name(),
+                request.getDevice_status(),
                 request.getOwner(),
                 request.getAddress(),
-                request.getPhoneNumber()
+                request.getPhone_number()
         );
 
         if (Objects.isNull(devices) || devices.isEmpty()) {

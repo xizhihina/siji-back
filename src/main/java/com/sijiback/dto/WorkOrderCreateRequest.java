@@ -6,7 +6,7 @@ import lombok.Data;
 // 根据请求中的faultId和maintenancePersonId检查是否存在对应的故障和维修人员，存在则创建工单
 @Data
 public class WorkOrderCreateRequest {
-    private int maintenancePersonId;//输入维修人员ID
-    private int faultId;//输入故障ID
+    private int maintenance_person_id;//输入维修人员ID
+    private int fault_id;//输入故障ID
     private String token;//输入用户鉴权token
 }

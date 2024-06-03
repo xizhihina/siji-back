@@ -6,6 +6,6 @@ import lombok.Data;
 // 根据设备ID查找相应的设备，然后删除
 @Data
 public class DeviceDeleteRequest {
-    private int deviceId;//输入设备id
+    private int device_id;//输入设备id
     private String token;//输入用户鉴权token
 }

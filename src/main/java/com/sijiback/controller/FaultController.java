@@ -5,6 +5,7 @@ import com.sijiback.service.FaultService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/fault")
 public class FaultController {
@@ -14,13 +15,13 @@ public class FaultController {
 
     // 创建新的故障
     @PostMapping("/add")
-    public FaultCreateResponse createFault(FaultCreateRequest faultCreateRequest) {
+    public FaultCreateResponse createFault(@RequestBody FaultCreateRequest faultCreateRequest) {
         return faultService.createFault(faultCreateRequest);
     }
 
     // 更新故障信息
     @PostMapping("/update")
-    public FaultUpdateResponse updateFault(FaultUpdateRequest faultUpdateRequest) {
+    public FaultUpdateResponse updateFault(@RequestBody FaultUpdateRequest faultUpdateRequest) {
         return faultService.updateFault(faultUpdateRequest);
     }
 
@@ -36,12 +37,12 @@ public class FaultController {
 
         // 创建请求对象
         FaultRequest faultRequest = new FaultRequest();
-        faultRequest.setDeviceId(deviceId);
+        faultRequest.setDevice_id(deviceId);
         faultRequest.setOwner(owner);
         faultRequest.setAddress(address);
-        faultRequest.setPhoneNumber(phoneNumber);
-        faultRequest.setDeviceName(deviceName);
-        faultRequest.setFaultStatus(faultStatus);
+        faultRequest.setPhone_number(phoneNumber);
+        faultRequest.setDevice_name(deviceName);
+        faultRequest.setFault_status(faultStatus);
 
         return faultService.getFaults(faultRequest);
     }

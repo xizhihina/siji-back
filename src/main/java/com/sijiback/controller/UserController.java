@@ -6,6 +6,7 @@ import jakarta.annotation.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
@@ -15,22 +16,22 @@ public class UserController {
 
     // 注册用户
     @PostMapping("/register")
-    public ResponseEntity<UserRegisterResponse> registerUser(UserRegisterRequest request) {
+    public ResponseEntity<UserRegisterResponse> registerUser(@RequestBody UserRegisterRequest request) {
         UserRegisterResponse response = userService.registerUser(new UserRegisterRequest(request.getUsername(), request.getPassword()));
         return ResponseEntity.ok(response);
     }
 
     // 用户登录
     @PostMapping("/login")
-    public ResponseEntity<UserLoginResponse> loginUser(UserLoginRequest request) {
+    public ResponseEntity<UserLoginResponse> loginUser(@RequestBody UserLoginRequest request) {
         UserLoginResponse response = userService.loginUser(new UserLoginRequest(request.getUsername(), request.getPassword()));
         return ResponseEntity.ok(response);
     }
 
     // 获取用户信息
     @GetMapping
-    public UserResponse getUser(int userId) {
-        return userService.getUser(userId);
+    public UserResponse getUser(int user_id) {
+        return userService.getUser(user_id);
     }
 }
 

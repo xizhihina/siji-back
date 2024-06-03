@@ -18,7 +18,7 @@ public class User {
     @TableField("token")
     private String token;
     @TableField("level")
-    private String level;
+    private int level;
     @TableField("phone_number")
     private String phoneNumber;
     @TableField("address")
@@ -27,11 +27,6 @@ public class User {
     private String avatar;
 
     public UserMessage ToUserMessage() {
-        UserMessage userMessage = new UserMessage();
-        userMessage.setId(this.id);
-        userMessage.setPhoneNumber(this.phoneNumber);
-        userMessage.setAvatar(this.avatar);
-        userMessage.setUsername(this.username);
-        return userMessage;
+        return new UserMessage(this.id, this.username, this.avatar,this.level, this.phoneNumber);
     }
 }

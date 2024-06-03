@@ -1,5 +1,8 @@
 package com.sijiback.dto;
 
+import com.sijiback.model.DeviceMessage;
+import com.sijiback.model.FaultMessage;
+import com.sijiback.model.UserMessage;
 import lombok.Data;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -7,14 +10,14 @@ import java.util.List;
 // 获取故障信息的响应体
 @Data
 public class FaultResponse {
-    private int statusCode;//返回状态码
-    private String statusMsg;//返回状态描述
-    private List<FaultResponse.FaultWithDetails> faults;//返回结果集
+    private int status_code;//返回状态码
+    private String status_msg;//返回状态描述
+    private List<FaultMessage> fault;//返回结果集
 
-    public FaultResponse(int statusCode, String statusMsg, List<FaultResponse.FaultWithDetails> faults) {
-        this.statusCode = statusCode;
-        this.statusMsg = statusMsg;
-        this.faults = faults;
+    public FaultResponse(int statusCode, String statusMsg, List<FaultWithDetails> faults) {
+        this.status_code = statusCode;
+        this.status_msg = statusMsg;
+        this.fault = faults.stream().map(i->new FaultMessage(i.getFaultId(),new DeviceMessage(i.getDeviceId(),new UserMessage(i.getUserId(), i.getOwner(), i.getAvatar(), i.getLevel(),i.getPhoneNumber()),i.getAddress(),i.getDeviceName(),i.getDeviceStatus()),i.getFaultDescription(),i.getFaultStatus(),i.getFaultCreateTime().toString())).toList();
     }
 
     @Data
@@ -30,7 +33,7 @@ public class FaultResponse {
         private String owner;
         private String address;
         private String avatar;
-        private String level;
+        private int level;
         private String phoneNumber;
     }
 }

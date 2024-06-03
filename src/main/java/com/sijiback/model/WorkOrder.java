@@ -19,7 +19,7 @@ public class WorkOrder {
     @TableField("maintenance_time")
     private LocalDateTime maintenanceTime;
     @TableField("status")
-    private String workOrderStatus;
+    private int workOrderStatus;
     @TableField("fault_id")
     private Integer faultId;
 }

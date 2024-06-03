@@ -33,42 +33,41 @@ public class WorkOrderService {
         WorkOrderCreateResponse response = new WorkOrderCreateResponse();
         try {
             // 检查fault_id是否存在
-            Fault fault = faultMapper.selectById(request.getFaultId());
+            Fault fault = faultMapper.selectById(request.getFault_id());
             if (fault == null) {
-                response.setStatusCode(1);
-                response.setStatusMsg("Fault ID not found");
+                response.setStatus_code(1);
+                response.setStatus_msg("Fault ID not found");
                 return response;
             }
 
             // 检查maintenance_person_id是否存在
-            User user = userMapper.selectById(request.getMaintenancePersonId());
+            User user = userMapper.selectById(request.getMaintenance_person_id());
             if (user == null) {
-                response.setStatusCode(1);
-                response.setStatusMsg("Maintenance person ID not found");
+                response.setStatus_code(1);
+                response.setStatus_msg("Maintenance person ID not found");
                 return response;
             }
-
             // 创建工单
             WorkOrder workOrder = new WorkOrder();
-            workOrder.setMaintenancePersonId(request.getMaintenancePersonId());
-            workOrder.setFaultId(request.getFaultId());
+            workOrder.setMaintenancePersonId(request.getMaintenance_person_id());
+            workOrder.setFaultId(request.getFault_id());
             workOrder.setMaintenanceTime(LocalDateTime.now());
-            workOrder.setWorkOrderStatus("1"); // 1表示维修中,2表示维修完成
+            workOrder.setWorkOrderStatus(1); // 1表示维修中,2表示维修完成
             int rows = workOrderMapper.insert(workOrder);
 
             if (rows > 0) {
                 // 创建成功
-                response.setStatusCode(0);
-                response.setStatusMsg("Success");
+                response.setStatus_code(0);
+                response.setStatus_msg("Success");
             } else {
                 // 创建失败
-                response.setStatusCode(1);
-                response.setStatusMsg("Failed to create work order");
+                response.setStatus_code(1);
+                response.setStatus_msg("Failed to create work order");
             }
         } catch (Exception e) {
             // 如果try块中的代码抛出异常，则执行以下代码
-            response.setStatusCode(1);
-            response.setStatusMsg("Failed to create work order");
+            response.setStatus_code(1);
+            response.setStatus_msg("Failed to create work order");
         }
         return response;
     }
@@ -79,56 +78,57 @@ public class WorkOrderService {
         WorkOrderUpdateStatusResponse response = new WorkOrderUpdateStatusResponse();
         try {
             // 检查fault_id是否存在
-            Fault fault = faultMapper.selectById(request.getFaultId());
+            Fault fault = faultMapper.selectById(request.getFault_id());
             if (fault == null) {
-                response.setStatusCode(1);
-                response.setStatusMsg("Fault ID not found");
+                response.setStatus_code(1);
+                response.setStatus_msg("Fault ID not found");
                 return response;
             }
 
             // 检查工单是否存在
-            WorkOrder workOrder = workOrderMapper.selectById(request.getWorkOrderId());
+            WorkOrder workOrder = workOrderMapper.selectById(request.getWork_order_id());
             if (workOrder == null) {
-                response.setStatusCode(1);
-                response.setStatusMsg("Work order not found");
+                response.setStatus_code(1);
+                response.setStatus_msg("Work order not found");
                 return response;
             }
 
             // 检查工单是否与故障关联
-            if (workOrder.getFaultId() == null || !workOrder.getFaultId().equals(request.getFaultId())) {
-                response.setStatusCode(1);
-                response.setStatusMsg("Work order is not associated with the fault");
+            if (workOrder.getFaultId() == null || !workOrder.getFaultId().equals(request.getFault_id())) {
+                response.setStatus_code(1);
+                response.setStatus_msg("Work order is not associated with the fault");
                 return response;
             }
 
             // 检查maintenance_person_id是否存在
-            User user = userMapper.selectById(request.getMaintenancePersonId());
+            User user = userMapper.selectById(request.getMaintenance_person_id());
             if (user == null) {
-                response.setStatusCode(1);
-                response.setStatusMsg("Maintenance person ID not found");
+                response.setStatus_code(1);
+                response.setStatus_msg("Maintenance person ID not found");
                 return response;
             }
 
             // 更新工单状态
-            workOrder.setWorkOrderStatus(String.valueOf(request.getWorkOrderStatus()));
-            workOrder.setMaintenancePersonId(request.getMaintenancePersonId());
+            System.out.println(request.getStatus());
+            workOrder.setWorkOrderStatus(request.getStatus());
+            workOrder.setMaintenancePersonId(request.getMaintenance_person_id());
             workOrder.setMaintenanceTime(LocalDateTime.parse(String.valueOf(LocalDateTime.now())));
             int rows = workOrderMapper.updateById(workOrder);
 
             if (rows > 0) {
                 // 更新成功
-                response.setStatusCode(0);
-                response.setStatusMsg("Success");
+                response.setStatus_code(0);
+                response.setStatus_msg("Success");
             }
             else {
                 // 更新失败
-                response.setStatusCode(1);
-                response.setStatusMsg("Failed to update work order status");
+                response.setStatus_code(1);
+                response.setStatus_msg("Failed to update work order status");
             }
         } catch (Exception e) {
             // 如果try块中的代码抛出异常，则执行以下代码
-            response.setStatusCode(1);
-            response.setStatusMsg("Failed to update work order status");
+            response.setStatus_code(1);
+            response.setStatus_msg("Failed to update work order status");
         }
         return response;
     }
@@ -139,27 +139,27 @@ public class WorkOrderService {
         WorkOrderDeleteResponse response = new WorkOrderDeleteResponse();
         try {
             // 检查工单是否存在
-            WorkOrder workOrder = workOrderMapper.selectById(request.getWorkOrderId());
+            WorkOrder workOrder = workOrderMapper.selectById(request.getWork_order_id());
             if (workOrder == null) {
-                response.setStatusCode(1);
-                response.setStatusMsg("Work order not found");
+                response.setStatus_code(1);
+                response.setStatus_msg("Work order not found");
             }
 
             // 删除工单
-            int rows = workOrderMapper.deleteById(request.getWorkOrderId());
+            int rows = workOrderMapper.deleteById(request.getWork_order_id());
             if (rows > 0) {
                 // 删除成功
-                response.setStatusCode(0);
-                response.setStatusMsg("Success");
+                response.setStatus_code(0);
+                response.setStatus_msg("Success");
             } else {
                 // 删除失败
-                response.setStatusCode(1);
-                response.setStatusMsg("Failed to delete work order");
+                response.setStatus_code(1);
+                response.setStatus_msg("Failed to delete work order");
             }
         } catch (Exception e) {
             // 如果try块中的代码抛出异常，则执行以下代码
-            response.setStatusCode(1);
-            response.setStatusMsg("Failed to delete work order");
+            response.setStatus_code(1);
+            response.setStatus_msg("Failed to delete work order");
         }
         return response;
     }
@@ -167,9 +167,9 @@ public class WorkOrderService {
     // 获取工单列表
     public WorkOrderResponse getWorkOrders(WorkOrderRequest request) {
         List<WorkOrderResponse.WorkOrderDetails> workOrders = workOrderMapper.getWorkOrdersByDetails(
-                request.getWorkOrderId(),
+                request.getWork_order_id(),
                 request.getOwner(),
-                request.getMaintenancePerson(),
+                request.getMaintenance_person(),
                 request.getAddress()
         );
 
