@@ -33,5 +33,17 @@ public class UserController {
     public UserResponse getUser(int user_id) {
         return userService.getUser(user_id);
     }
+
+    // 获取所有用户信息
+    @GetMapping("/all")
+    public UserAllResponse getAllUsers(@RequestParam(required = false) Integer user_id, @RequestParam(required = false) String username, @RequestParam(required = false) String token){
+        return userService.getAllUsers(user_id==null?0:user_id, username,token);
+    }
+
+    // 更新用户信息
+    @PostMapping("/update")
+    public UserUpdateResponse updateUser(@RequestBody UserUpdateRequest request) {
+        return userService.updateUser(request);
+    }
 }
 

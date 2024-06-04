@@ -1,5 +1,7 @@
 package com.sijiback.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.sijiback.dto.*;
 import com.sijiback.mapper.UserMapper;
 import com.sijiback.model.User;
@@ -10,6 +12,7 @@ import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
+import java.sql.Wrapper;
 import java.util.Date;
 
 @Service
@@ -119,7 +122,23 @@ public class UserService {
 
         return response;
     }
-
+    /**
+     * 获取所有用户信息
+     */
+    public UserAllResponse getAllUsers(int id, String username, String token) {
+        UserAllResponse response = new UserAllResponse();
+        response.setStatus_code(0);
+        response.setStatus_msg("Success");
+        LambdaQueryWrapper<User> queryWrapper = Wrappers.lambdaQuery();
+        if (id != 0) {
+            queryWrapper.eq(User::getId, id);
+        }
+        if (username != null) {
+            queryWrapper.eq(User::getUsername, username);
+        }
+        response.setUser(userMapper.selectList(queryWrapper).stream().map(User::ToUserMessage).toList());
+        return response;
+    }
     /**
      * 修改用户头像
      */
@@ -133,6 +152,33 @@ public class UserService {
         response.setStatus_code(0);
         response.setStatus_msg("Success");
         response.setUser(user.ToUserMessage());
+        return response;
+    }
+
+    /**
+     * 更新用户信息
+     */
+    public UserUpdateResponse updateUser(UserUpdateRequest request) {
+        User user = userMapper.selectById(request.getUser_id());
+        if (user == null) {
+            UserUpdateResponse response = new UserUpdateResponse();
+            response.setStatus_code(1);
+            response.setStatus_msg("User not found");
+            return response;
+        }
+//        if (!request.getToken().equals(user.getToken())) {
+//            UserUpdateResponse response = new UserUpdateResponse();
+//            response.setStatus_code(2);
+//            response.setStatus_msg("Token error");
+//            return response;
+//        }
+        user.setUsername(request.getUsername());
+        user.setLevel(request.getLevel());
+        user.setPhoneNumber(request.getPhone_number());
+        userMapper.updateById(user);
+        UserUpdateResponse response = new UserUpdateResponse();
+        response.setStatus_code(0);
+        response.setStatus_msg("Success");
         return response;
     }
 }
