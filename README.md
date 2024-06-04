@@ -1,0 +1,6 @@
+![image](https://github.com/xizhihina/siji-back/assets/118249771/606084a8-1591-4aa4-87d7-dceafe891d35)
+![image](https://github.com/xizhihina/siji-back/assets/118249771/e4dcf3e6-c06f-4ec5-ab08-3f1300dbe0cd)
+![image](https://github.com/xizhihina/siji-back/assets/118249771/2f2b6c40-6632-4220-b79a-92f78c309d38)
+![image](https://github.com/xizhihina/siji-back/assets/118249771/8eb1ac29-b939-4786-b463-3d7d42bb4ca3)
+![image](https://github.com/xizhihina/siji-back/assets/118249771/929d1543-3395-4134-89e9-d232bbe6b5d5)
+![image](https://github.com/xizhihina/siji-back/assets/118249771/2541cd54-6741-40b9-8fae-b526b3cb5d6b)
